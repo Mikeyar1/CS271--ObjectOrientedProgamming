@@ -3,6 +3,14 @@ package CardGame;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+* Class: DeckList
+* @author Mikey Arias
+* Written: April 23, 2022
+*
+*  Create an instance of DeckList to manage a deck of cards.
+ * - Use methods such as shuffle, reset, getCard, peek, and showDeck to interact with the deck.
+*/
 public class DeckList {
 	public static final int DECKSIZE = 52;
 	private LinkedList<Card> deck;
