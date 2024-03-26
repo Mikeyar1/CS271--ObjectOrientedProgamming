@@ -1,0 +1,135 @@
+/**
+ * Represents a tower of dice, allowing the addition of unique dice, rolling all contained dice,
+ * and comparing the current state of the tower to another.
+ * Author: Mikey Arias
+ * Date: 02/28/2022
+ * Course: CSE 271 Lab 2 - Flexible Dice Part 2
+ */
+import java.util.ArrayList;
+
+public class DiceTower {
+
+    private ArrayList<Die> dice;
+
+    /**
+     * Constructs an empty DiceTower.
+     */
+    public DiceTower() {
+        dice = new ArrayList<>();
+    }
+
+    /**
+     * Adds a new die to the tower if it does not already exist in the tower.
+     * @param newDie the die to add
+     */
+    public void addDie(Die newDie) {
+        for (Die d : dice) {
+            if (d.compareTo(newDie)) {
+                System.out.println("Error! Die already exists!");
+                return;
+            }
+        }
+        dice.add(newDie);
+    }
+
+    /**
+     * Empties the dice tower, removing all contained dice.
+     */
+    public void emptyDiceTower() {
+        dice = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("DiceTower ");
+        for (int i = 0; i < dice.size(); i++) {
+            str.append(dice.get(i).toString());
+            if (i < dice.size() - 1) {
+                str.append(",");
+            }
+        }
+        return str.toString();
+    }
+
+    /**
+     * Returns the quantity of dice in the tower.
+     * @return the number of dice
+     */
+    public int getDiceQuantity() {
+        return dice.size();
+    }
+
+    /**
+     * Calculates and returns the total of the current values of all dice in the tower.
+     * @return the total value
+     */
+    public int getTotal() {
+        int sum = 0;
+        for (Die d : dice) {
+            sum += d.getCurrentValue();
+        }
+        return sum;
+    }
+
+    /**
+     * Retrieves a die from the tower at the specified position.
+     * @param diePosition the position of the die in the tower
+     * @return the die at the specified position, or null if the position is invalid
+     */
+    public Die getDie(int diePosition) {
+        if (diePosition < 0 || diePosition >= dice.size()) {
+            System.out.println("Invalid diePosition!");
+            return null;
+        }
+        return dice.get(diePosition);
+    }
+
+    /**
+     * Gets the current values of all dice in the tower.
+     * @return an ArrayList containing the current values of the dice
+     */
+    public ArrayList<Integer> getCurrentValues() {
+        ArrayList<Integer> values = new ArrayList<>();
+        for (Die d : dice) {
+            values.add(d.getCurrentValue());
+        }
+        return values;
+    }
+
+    /**
+     * Rolls all dice in the tower, updating their current values.
+     */
+    public void roll() {
+        for (Die die : dice) {
+            die.rollDie();
+        }
+    }
+
+    /**
+     * Swaps the positions of two dice in the tower.
+     * @param index1 the index of the first die
+     * @param index2 the index of the second die
+     */
+    private void swapDice(int index1, int index2) {
+        Die temp = dice.get(index1);
+        dice.set(index1, dice.get(index2));
+        dice.set(index2, temp);
+    }
+
+    /**
+     * Compares this DiceTower to another, checking if they contain the same dice in the same order.
+     * @param other the DiceTower to compare with
+     * @return true if the towers are identical, false otherwise
+     */
+    public boolean compareTo(DiceTower other) {
+        if (dice.size() == other.dice.size()) {
+            for (int i = 0; i < dice.size(); i++) {
+                if (!dice.get(i).compareTo(other.dice.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+}
