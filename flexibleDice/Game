@@ -1,0 +1,89 @@
+/**
+ * A simple dice game simulation between two players.
+ * Each player rolls a set of dice and the player with the highest total wins the round.
+ * The game runs for three rounds to determine the overall winner.
+ * Author: Mikey Arias
+ * Course: CSE 271, Lab 3
+ * Date: 03/08/2022
+ */
+
+import java.util.ArrayList;
+
+public class Game {
+    public static void main(String[] args) {
+
+        // Initialize even and odd valued dice
+        ArrayList<Integer> evenValues = new ArrayList<>();
+        ArrayList<Integer> oddValues = new ArrayList<>();
+
+        // Populate even and odd value lists
+        for (int i = 2; i <= 10; i++) {
+            if (i % 2 == 0) {
+                evenValues.add(i);
+            } else {
+                oddValues.add(i);
+            }
+        }
+
+        // Create dice with even, odd, and 13 sided values
+        Die evenDie = new Die(evenValues);
+        Die oddDie = new Die(oddValues);
+        Die die13Sided = new Die(13, 1);
+
+        // Setup player dice towers
+        DiceTower player1 = new DiceTower();
+        player1.addDie(evenDie);
+        player1.addDie(die13Sided);
+
+        DiceTower player2 = new DiceTower();
+        player2.addDie(oddDie);
+        player2.addDie(die13Sided);
+
+        // Variables to track winning rounds
+        int player1WinningRounds = 0;
+        int player2WinningRounds = 0;
+
+        // Simulate three rounds of the game
+        for (int i = 0; i < 3; i++) {
+            System.out.println("Round " + (i + 1));
+            System.out.println("-----------------------------------------------\n");
+
+            player1.roll();
+            int player1Score = player1.getTotal();
+            ArrayList<Integer> player1RolledValues = player1.getCurrentValues();
+            System.out.println("Player 1 Rolled Values:");
+            System.out.printf("Even Die: %d\n13-Sided Die: %d\nScore: %d\n",
+                    player1RolledValues.get(0), player1RolledValues.get(1), player1Score);
+            System.out.println("-----------------------------------------------\n");
+
+            player2.roll();
+            int player2Score = player2.getTotal();
+            ArrayList<Integer> player2RolledValues = player2.getCurrentValues();
+            System.out.println("Player 2 Rolled Values:");
+            System.out.printf("Odd Die: %d\n13-Sided Die: %d\nScore: %d\n",
+                    player2RolledValues.get(0), player2RolledValues.get(1), player2Score);
+            System.out.println("-----------------------------------------------\n");
+
+            // Determine and announce round winner
+            if (player1Score > player2Score) {
+                System.out.println("*****Player 1 is Winner*****");
+                player1WinningRounds += 1;
+            } else if (player2Score > player1Score) {
+                System.out.println("*****Player 2 is Winner*****");
+                player2WinningRounds += 1;
+            } else {
+                System.out.println("*****Round is Tie*****");
+            }
+            System.out.println("==============================================\n");
+        }
+
+        // Determine and announce the match winner
+        if (player1WinningRounds > player2WinningRounds) {
+            System.out.println("*****Winner of this match is Player 1*****");
+        } else if (player1WinningRounds < player2WinningRounds) {
+            System.out.println("*****Winner of this match is Player 2*****");
+        } else {
+            System.out.println("*****Match is Tie*****");
+        }
+    }
+}
