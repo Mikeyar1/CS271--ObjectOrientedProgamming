@@ -1,0 +1,160 @@
+/**
+ * Represents a flexible die with customizable sides.
+ * Allows creating a die with a variable number of sides, custom side values, and supports rolling.
+ * Author: Mikey Arias
+ * Course: CSE 271
+ * Date: 02/26/2022
+ */
+import java.util.ArrayList;
+
+public class Die {
+
+    private ArrayList<Integer> sideValues;
+    private int indexOfCurrentFace;
+
+    /**
+     * Constructs a die with consecutive integer values starting from 1.
+     * @param sides the number of sides for the die
+     */
+    public Die(int sides) {
+        sideValues = new ArrayList<>();
+        for (int i = 1; i <= sides; i++) {
+            sideValues.add(i);
+        }
+        indexOfCurrentFace = 0;
+    }
+
+    /**
+     * Constructs a die with consecutive integer values starting from a minimum value.
+     * @param sides the number of sides for the die
+     * @param min the starting value for the sides
+     */
+    public Die(int sides, int min) {
+        sideValues = new ArrayList<>();
+        for (int i = 0; i < sides; i++) {
+            sideValues.add(i + min);
+        }
+        indexOfCurrentFace = 0;
+    }
+
+    /**
+     * Constructs a die with custom values for each side.
+     * @param valuesArray an ArrayList containing the values for each side
+     */
+    public Die(ArrayList<Integer> valuesArray) {
+        sideValues = new ArrayList<>(valuesArray);
+        indexOfCurrentFace = 0;
+    }
+
+    /**
+     * Constructs a default die with a single side.
+     */
+    public Die() {
+        this(1);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder data = new StringBuilder(sideValues.size() + "");
+        for (int i = 0; i < sideValues.size(); i++) {
+            data.append(sideValues.get(i));
+            if (i != sideValues.size() - 1) {
+                data.append(":");
+            }
+        }
+        return data.toString();
+    }
+    /**
+     * Returns the number of sides on the die.
+     * @return the number of sides
+     */
+    public int getQuantityOfSides() {
+        return sideValues.size();
+    }
+
+    /**
+     * Returns the value of the side at the specified location.
+     * @param sideLocation the index of the side
+     * @return the value at the specified location, or -1 if the location is invalid
+     */
+    public int getValueAt(int sideLocation) {
+        if (sideLocation < 0 || sideLocation >= sideValues.size()) {
+            System.out.println("Invalid sideLocation!");
+            return -1;
+        }
+        return sideValues.get(sideLocation);
+    }
+
+    /**
+     * Returns the value of the current face of the die.
+     * @return the current face value
+     */
+    public int getCurrentValue() {
+        return sideValues.get(indexOfCurrentFace);
+    }
+
+    /**
+     * Rolls the die to set and return a new current face value randomly.
+     * @return the new current face value
+     */
+    public int rollDie() {
+        indexOfCurrentFace = (int) (Math.random() * sideValues.size());
+        return getCurrentValue();
+    }
+
+    /**
+     * Sets the current face of the die to a specified side location.
+     * @param sideLocation the index of the side to set as the current face
+     */
+    public void setFacing(int sideLocation) {
+        if (sideLocation < 0 || sideLocation >= sideValues.size()) {
+            System.out.println("Invalid sideLocation!");
+            return;
+        }
+        indexOfCurrentFace = sideLocation;
+    }
+
+    /**
+     * Compares the current face value of this die with another die.
+     * @param other the other die to compare with
+     * @return true if the current face values are the same, false otherwise
+     */
+    public boolean compareDieValue(Die other) {
+        return this.getCurrentValue() == other.getCurrentValue();
+    }
+
+    /**
+     * Compares the quantity of sides of this die with another die.
+     * @param other the other die to compare with
+     * @return true if both dice have the same number of sides, false otherwise
+     */
+    public boolean compareQuantityOfSides(Die other) {
+        return this.getQuantityOfSides() == other.getQuantityOfSides();
+    }
+
+    /**
+     * Compares the sides values of this die with another die.
+     * @param other the other die to compare with
+     * @return true if both dice have the same sides values, false otherwise
+     */
+    public boolean compareDice(Die other) {
+        if (this.compareQuantityOfSides(other)) {
+            for (int i = 0; i < sideValues.size(); i++) {
+                if (this.sideValues.get(i) != other.sideValues.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Compares this die with another die in terms of side quantity, side values, and current face value.
+     * @param other the other die to compare with
+     * @return true if both dice are equal in terms of side quantity, side values, and current face value, false otherwise
+     */
+    public boolean compareTo(Die other) {
+        return this.compareQuantityOfSides(other) && this.compareDice(other) && this.compareDieValue(other);
+    }
+}
